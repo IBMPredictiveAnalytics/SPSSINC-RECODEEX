@@ -1,7 +1,7 @@
 Name: SPSSINC RECODEEX
 Command-Specs: SPSSINC_RECODEEX.xml
 Code-Files: SPSSINC_RECODEEX.py
-Misc-Files: markdown.html,extsyntax.css,IBMdialogicon.png
+Misc-Files: extsyntax.css,IBMdialogicon.png,markdown.html
 Summary: Extended RECODE command
 Description: This command extends the built-in RECODE command in sever
  al ways. Date or time constants are used for variables of these types
@@ -9,8 +9,9 @@ Description: This command extends the built-in RECODE command in sever
  ble labels can be copied.  Variable types can be changed for the outp
  ut variables.
 Author: JKP, IBM SPSS
-Version: 1.1.0
-Product-Version: 18
+Version: 2.0.0
+Product-Version: 24
 Date: 11/11/2014
 Categories: transformations
 Plugins: Python
+Python-Version: 3

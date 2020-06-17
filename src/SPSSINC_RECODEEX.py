@@ -1,10 +1,10 @@
-from __future__ import with_statement
+
 #/***********************************************************************
 # * Licensed Materials - Property of IBM 
 # *
 # * IBM SPSS Products: Statistics Common
 # *
-# * (C) Copyright IBM Corp. 1989, 2014
+# * (C) Copyright IBM Corp. 1989, 2020
 # *
 # * US Government Users Restricted Rights - Use, duplication or disclosure
 # * restricted by GSA ADP Schedule Contract with IBM Corp. 
@@ -106,7 +106,7 @@ def Run(args):
     #except:
         #pass
 
-    args = args[args.keys()[0]]
+    args = args[list(args.keys())[0]]
 
     oobj = Syntax([
         Template("", subc="",  ktype="literal", var="varlist", islist=True),
@@ -131,7 +131,7 @@ def Run(args):
         def _(msg):
             return msg
     # A HELP subcommand overrides all else
-    if args.has_key("HELP"):
+    if "HELP" in args:
         #print helptext
         helper()
     else:
@@ -151,7 +151,7 @@ def helper():
     # webbrowser.open seems not to work well
     browser = webbrowser.get()
     if not browser.open_new(helpspec):
-        print("Help file not found:" + helpspec)
+        print(("Help file not found:" + helpspec))
 try:    #override
     from extension import helper
 except:
@@ -223,9 +223,9 @@ def recode(varlist, recodes, stringsize=None, makevaluelabels=True, copyvariable
             #" ".join([_smartquote(val, vartype == 2) + " " + _smartquote(label, True) for val, label in vldefs.items()])))
         
         spss.Submit(r"""VALUE LABELS %s %s.""" % (" ".join(outputlist), \
-            " ".join([val + " " + _smartquote(label, True) for val, label in vldefs.items()])))
+            " ".join([val + " " + _smartquote(label, True) for val, label in list(vldefs.items())])))
     if valuelabelmessage:
-        print valuelabelmessage
+        print(valuelabelmessage)
 
 def makevallabels(vldefs, inputlabels, valuelabels, 
         isutf8, ecutf8):
@@ -359,7 +359,7 @@ def parserecodes(recodes, vartype, stringsize):
 
 # characters legal in recode spec keywords
 # string.letters is affected by local setting so need to subset
-letters = string.letters[:52]
+letters = string.ascii_letters[:52]
 def splitter(pplus):
     """split string according to SPSS Statistics rules and return as list
     
@@ -407,7 +407,7 @@ def checklabelconsistency(varnames, vardict):
         return
     clashes = []
     for i,var in enumerate(varnames):
-        vallabels = set([(k.lower(), v) for k, v in vardict[var].ValueLabels.items()])
+        vallabels = set([(k.lower(), v) for k, v in list(vardict[var].ValueLabels.items())])
         if i == 0:
             refset = copy.copy(vallabels)
         else:
@@ -533,13 +533,13 @@ def yrmoda(ymd):
     The result is equivalent to the SPSS subroutine yrmoda result converted to seconds"""
     
     if len(ymd) != 3:
-        raise ValueError, "date specification must have the form yyyy-mm-dd"
+        raise ValueError("date specification must have the form yyyy-mm-dd")
     year = int(ymd[0])
     month = int(ymd[1])
     day = int(ymd[2])
     
     if year < 1582 or month < 1 or month > 13 or day <0 or day > 31:
-        raise ValueError, (_("Invalid date value: %d %d %d")) % (year, month, day)
+        raise ValueError((_("Invalid date value: %d %d %d")) % (year, month, day))
     yrmo = year * 365 + (year+3)//4 - (year+99)//100 + (year + 399)//400 \
          + 3055 *(month+2)//100 - 578192
     if month > 2:
